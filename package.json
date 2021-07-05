@@ -1,0 +1,23 @@
+{
+  "name": "cryptochain",
+  "version": "1.0.0",
+  "description": "Building my own Blcokchain and Crypto using Node, Jest, Express and React",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BenGardiner123/cryptochain.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BenGardiner123/cryptochain/issues"
+  },
+  "homepage": "https://github.com/BenGardiner123/cryptochain#readme",
+  "devDependencies": {
+    "jest": "^27.0.6"
+  }
+}
