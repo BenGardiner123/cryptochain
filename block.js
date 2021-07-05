@@ -15,6 +15,7 @@ class Block{
     }
 
     static mineBlock({ lastBlock, data }){
+        //https://passwordsgenerator.net/sha256-hash-generator/
         const timestamp = Date.now();
         const lastHash = lastBlock.hash;
 
