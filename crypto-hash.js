@@ -1,5 +1,6 @@
 const crypto = require('crypto');
 
+
 const cryptoHash = (...inputs) => {
     //crpyot is the inbuilt cryptogrpahy library in node.
     ///we can call the sha-256 like so

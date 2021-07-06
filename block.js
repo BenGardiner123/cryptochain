@@ -1,5 +1,8 @@
 const { GENESIS_DATA, MINE_RATE } = require('./config');
 const cryptoHash = require('./crypto-hash');
+const hexToBinary = require('hex-to-binary');
+
+
 class Block {
     constructor({ timestamp, lastHash, hash, data, nonce, difficulty }) {
         this.timestamp = timestamp
@@ -18,6 +21,7 @@ class Block {
 
     static mineBlock({ lastBlock, data }) {
         //https://passwordsgenerator.net/sha256-hash-generator/
+
         const lastHash = lastBlock.hash;
         let hash, timestamp;
         let { difficulty } = lastBlock;
@@ -28,7 +32,12 @@ class Block {
             timestamp = Date.now();
             difficulty = Block.adjustDifficulty({originalBlock: lastBlock, timestamp})
             hash = cryptoHash(timestamp, lastHash, data, nonce, difficulty);
-        } while (hash.substring(0, difficulty) !== '0'.repeat(difficulty));
+            //below the hex code is converted to the binary version so as not to clutter the console 
+            //but stuill give us that high quality fine grained control over the difficulty
+            //i also just wrapped the hash digest with the hex to binary function which will read the hexadeciamla nd return it as binary
+            //the reason this is important is beacuse using hex codes you miss out on a ton of opportunities to control the difficulty
+            //the binary gives much finer grained control by having more spaces avaialble 0001 01010 01010
+        } while (hexToBinary(hash).substring(0, difficulty) !== '0'.repeat(difficulty));
 
         return new this({
             timestamp, lastHash, data, difficulty, nonce, hash
