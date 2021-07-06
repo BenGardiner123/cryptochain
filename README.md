@@ -1,2 +1,2 @@
 # cryptochain
-Building my own Blcokchain and Crypto using Node, Jest, Express and React
+Building my own Blockchain and Crypto using Node, Jest, Express and React
