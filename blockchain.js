@@ -23,7 +23,7 @@ class Blockchain{
         //second rule check the entire chain is valid
         for (let i=1; i<chain.length; i++) {
              ///setup constants for all the feilds in the block using JS destructuring syntax in one line
-            const { timestamp, lastHash, hash, data} = chain[i];
+            const { timestamp, lastHash, nonce, difficulty, hash, data} = chain[i];
 
             const actualLastHash = chain[i-1].hash;
            
@@ -31,7 +31,7 @@ class Blockchain{
             if(lastHash !== actualLastHash) return false;
 
             ///rebuild the crypto-hash and check for eqaulity 
-            const valiatedHash = cryptoHash(timestamp, lastHash, data);
+            const valiatedHash = cryptoHash(timestamp, lastHash, data, nonce, difficulty);
 
             if(hash !== valiatedHash) return false;
         }
