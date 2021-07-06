@@ -22,6 +22,8 @@ class Blockchain{
 
         //second rule check the entire chain is valid
         for (let i=1; i<chain.length; i++) {
+            //ghet the last diffculty level - we need to use ths when we check for jumped or cheesed diffuclty levels
+            const lastDifficulty = chain[i-1].difficulty;
              ///setup constants for all the feilds in the block using JS destructuring syntax in one line
             const { timestamp, lastHash, nonce, difficulty, hash, data} = chain[i];
 
@@ -34,6 +36,10 @@ class Blockchain{
             const valiatedHash = cryptoHash(timestamp, lastHash, data, nonce, difficulty);
 
             if(hash !== valiatedHash) return false;
+
+            //check for jumped or cheesed difculty
+            if((lastDifficulty - difficulty) > 1) return false;
+
         }
         
         return true;
