@@ -38,7 +38,9 @@ class Blockchain{
             if(hash !== valiatedHash) return false;
 
             //check for jumped or cheesed difculty
-            if((lastDifficulty - difficulty) > 1) return false;
+            //using th eabsolute number heer it stops the number geinb jumped to high and slowing down the entire blockchain
+            //becasue the hash youwls take too long to create becasue its so hard
+            if(Math.abs(lastDifficulty - difficulty) > 1) return false;
 
         }
         
