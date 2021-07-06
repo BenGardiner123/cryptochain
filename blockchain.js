@@ -42,7 +42,7 @@ class Blockchain{
     replaceChain(chain){
         //enforec the rules for chain replcaement - chain has to be longer than the existing chain
         if(chain.length <= this.chain.length){
-            console.error('the oncoming chain must be longer!')
+            console.error('the incoming chain must be longer!')
             return;
         }
 
@@ -51,8 +51,8 @@ class Blockchain{
             console.error('the incoming chain must be valid')
             return;
         }
-        
-        console.log('replacing chain with', chain);
+
+        console.log('replacing chain with ', chain);
         this.chain = chain;
     }
 
