@@ -44,23 +44,21 @@ class PubSub {
     }
 
     subscribeToChannels() {
-        Object.values(CHANNELS).forEach(channel => {
-          this.subscriber.subscribe(channel);
+        this.pubnub.subscribe({
+          channels: [Object.values(CHANNELS)]
         });
-    }
+      }
 
     //publish the message across the selected channel
     //added this logic basically if you publish something to a channel you dont want to send it to yourself
     //so when you call this publish function the first tthing that happens is that you unsub from it - then publish, 
     //once the message has gone out you re-sub to the channel 
     publish({ channel, message }) {
-        this.subscriber.unsubscribe(channel, () => {
-            this.pubnub.publish({ channel, message }, () => {
-                this.subscriber.subscribe(channel);
-            });
-        });
-  
-    }
+        // there is an unsubscribe function in pubnub
+        // but it doesn't have a callback that fires after success
+        // therefore, redundant publishes to the same local subscriber will be accepted as noisy no-ops
+        this.pubnub.publish({ message, channel });
+      }
 
     broadcastChain(){
         this.publish({
