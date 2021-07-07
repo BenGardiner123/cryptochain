@@ -1,10 +1,14 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const Blockchain = require('./blockchain');
+const PubSub = require('./pubsub');
 
 
 const app = express();
 const blockchain = new Blockchain();
+const pubsub = new PubSub({ blockchain });
+
+setTimeout(() => pubsub.boradcastChain(), 1000);
 
 app.use(express.json());
 
@@ -27,5 +31,7 @@ const PORT = 3000;
 app.listen(PORT, () => {
     console.log(`The application has been activated and listening on localhost:${PORT}`);
 });
+
+
 
 
