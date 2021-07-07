@@ -43,12 +43,26 @@ class PubSub {
         }
     }
 
-    //publish the message across the selected channel
-    publish({ channel, message }) {
-        this.pubnub.publish({ channel, message });
+    subscribeToChannels() {
+        Object.values(CHANNELS).forEach(channel => {
+          this.subscriber.subscribe(channel);
+        });
     }
 
-    boradcastChain(){
+    //publish the message across the selected channel
+    //added this logic basically if you publish something to a channel you dont want to send it to yourself
+    //so when you call this publish function the first tthing that happens is that you unsub from it - then publish, 
+    //once the message has gone out you re-sub to the channel 
+    publish({ channel, message }) {
+        this.subscriber.unsubscribe(channel, () => {
+            this.pubnub.publish({ channel, message }, () => {
+                this.subscriber.subscribe(channel);
+            });
+        });
+  
+    }
+
+    broadcastChain(){
         this.publish({
             channel: CHANNELS.BLOCKCHAIN,
             //we can only publish string messages across the channels and blockchain.chain is an array - so JSON strinify it
