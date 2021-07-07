@@ -16,7 +16,8 @@ const ROOT_NODE_ADDRESS = `http://localhost:${DEFAULT_PORT}`;
 
 ///----------------------------------------------------------
 
-setTimeout(() => pubsub.broadcastChain(), 1000);
+//this was a test be no longer required 
+// setTimeout(() => pubsub.broadcastChain(), 1000);
 
 app.use(express.json());
 
@@ -63,7 +64,7 @@ const PORT = PEER_PORT || DEFAULT_PORT;
 
 app.listen(PORT, () => {
     console.log(`The application has been activated and listening on localhost:${PORT}`);
-    
+
     //dont sync on the default port i.e the fist node - syncying with yourself is redundant
     if(PORT !== DEFAULT_PORT){
         syncChains();
