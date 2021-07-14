@@ -1,8 +1,8 @@
-const uuid = require('uuid/dist/v1');
+const { v1: uuidv1 } = require('uuid');
 
 class Transaction {
     constructor({ senderWallet, recipient, amount}) {
-        this.id = uuid();
+        this.id = uuidv1();
         this.outoutMap = this.createOutputMap({ senderWallet, recipient, amount});
     }
 
