@@ -1,5 +1,6 @@
 //set global mine rate value ** in miliseconds
 const MINE_RATE = 1000;
+const STARTING_BALANCE = 1000;
 
 //seed the inital difficulty level for the hash
 const INITIAL_DIFFICULTY = 3;
@@ -15,4 +16,4 @@ const GENESIS_DATA = {
     data: []
 };
 
-module.exports = { GENESIS_DATA, MINE_RATE };
+module.exports = { GENESIS_DATA, MINE_RATE, STARTING_BALANCE };
