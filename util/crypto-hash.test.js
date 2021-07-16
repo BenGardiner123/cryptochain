@@ -3,9 +3,17 @@ const cryptoHash = require("./crypto-hash");
 describe('cryptoHash()', () => {
     it('generates a SHA-256 hashed output', () => {
         expect(cryptoHash('benshash'))
-        .toEqual('050c8bad06c3202d1285d40a9c9d55b1a96dad1d72ed43998ef4dbbfb4b7b5d8');
+        .toEqual('5b6087607606b204c3994cc29711536022d65ac4aef7b9e78e848ea1052d3a3e');
     });
     it('produces the same hash with the same input arguments ni any order', () => {
         expect(cryptoHash('one', 'two', 'three')).toEqual(cryptoHash('three', 'one', 'two'));
+    });
+    it('produces a unique hash when the properties have changed on an input', () => {
+        const foo = {};
+        const originalHash = cryptoHash(foo);
+        foo['a'] = 'a';
+        
+        expect(cryptoHash(foo)).not.toEqual(originalHash);
+
     });
 });

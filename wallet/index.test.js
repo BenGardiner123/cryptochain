@@ -64,15 +64,17 @@ describe ('Wallet', () => {
             });
 
             it('matches the transaction input with the wallet ', () => {
-                expect(transaction.input.address).toEqaul(wallet.publicKey);
+                expect(transaction.input.address).toEqual(wallet.publicKey);
             });
 
             it(' outputs the amount to the recipient  ', () => {
-                expect(transaction.outputValue[recipient]).toEqaul(amount);
+                expect(transaction.outputMap[recipient]).toEqual(amount);
             });
         });
     });
 
+    
+    
 
 });
     
