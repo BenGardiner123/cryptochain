@@ -8,14 +8,17 @@ const credentials = {
 
 const CHANNELS = {
     TEST: 'TEST',
-    BLOCKCHAIN: "BLOCKCHAIN"
+    BLOCKCHAIN: 'BLOCKCHAIN',
+    TRANSACTION: 'TRANSACTION'
 };
 
 class PubSub {
-    constructor({ blockchain }) {
+    constructor({ blockchain, transactionPool, wallet }) {
         //makes the local instance of the blockchain = the incoming blockchain 
         this.blockchain = blockchain;
+        this.wallet = wallet;
         this.pubnub = new PubNub(credentials);
+        this.transactionPool = transactionPool;
 
         //auto mapping the channels as they get added to the CHANNELS map above
         this.pubnub.subscribe({ channels: Object.values(CHANNELS) });
@@ -35,9 +38,20 @@ class PubSub {
                 console.log(`Message recieved. Channel: ${channel}. Message: ${message}. `);
 
                 const parsedMessage = JSON.stringify(message);
-                if(channel == CHANNELS.BLOCKCHAIN){
-                    //the logic to confirm the chain is valid is inside replaceChain already
-                    this.blockchain.replaceChain(parsedMessage);
+
+                switch (channel) {
+                    case CHANNELS.BLOCKCHAIN:
+                        this.blockchain.replaceChain(parsedMessage);
+                        break;
+                        case CHANNELS.TRANSACTION:
+                            if (!this.transactionPool.existingTransaction({
+                              inputAddress: this.wallet.publicKey
+                            })) {
+                              this.transactionPool.setTransaction(parsedMessage);
+                            }
+                            break;
+                    default:
+                        return;
                 }
             }
         }
@@ -65,6 +79,13 @@ class PubSub {
             channel: CHANNELS.BLOCKCHAIN,
             //we can only publish string messages across the channels and blockchain.chain is an array - so JSON strinify it
             message: JSON.stringify(this.blockchain.chain)
+        });
+    }
+
+    broadcastTransaction(transaction) {
+        this.publish({
+            channel: CHANNELS.TRANSACTION,
+            message: JSON.stringify(transaction)
         });
     }
 
