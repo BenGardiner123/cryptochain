@@ -1,11 +1,12 @@
 const { v1: uuidv1 } = require('uuid');
+const { REWARD_INPUT, MINING_REWARD } = require('../config');
 const { verifySignature } = require('../util');
 
 class Transaction {
-    constructor({ senderWallet, recipient, amount}) {
+    constructor({ senderWallet, recipient, amount, outputMap, input}) {
         this.id = uuidv1();
-        this.outputMap = this.createOutputMap({ senderWallet, recipient, amount});
-        this.input = this.createInput({ senderWallet, outputMap: this.outputMap });
+        this.outputMap = outputMap || this.createOutputMap({ senderWallet, recipient, amount });
+        this.input = input || this.createInput({ senderWallet, outputMap: this.outputMap });
     }
 
     createOutputMap({ senderWallet, recipient, amount}) {
@@ -61,6 +62,14 @@ class Transaction {
         }
     
         return true;
+      }
+
+      static rewardTransaction({ minerWallet }) {
+        return new this({ 
+          input: REWARD_INPUT,
+          //below is not an array - its showing that the key to outputmap is a dynamic variable
+          outputMap: { [minerWallet.publicKey]: MINING_REWARD }
+        });
       }
 
 }
